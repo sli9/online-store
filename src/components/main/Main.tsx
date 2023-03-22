@@ -6,6 +6,8 @@ import {Card, CardActions, CardContent, CardMedia} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import {Categories} from "../../features/Categories";
+import { Sort } from "../Sort";
+import { Stack } from "@mui/material";
 
 export const Main = () => {
     const motoList = useAppSelector(state => state.shop)
@@ -18,8 +20,11 @@ export const Main = () => {
     }, [])
 
     return <>
-        <Categories/>
-        <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly', maxWidth: '80%', margin: 'auto'}}>
+        <Stack direction={'row'} style={{maxWidth: '80%'}}>
+            <Categories/>
+            <Sort/>
+        </Stack>
+        <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly', maxWidth: '80%', margin: 'auto', backgroundColor: '#80808036'}}>
             {motoList.map(m => (
                 <Card sx={{ width: 345 }} style={{margin: 10}} key={m.id}>
                     <CardMedia
