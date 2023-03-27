@@ -1,13 +1,14 @@
 import React, {useState} from "react"
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
+import styles from "./Categories.module.scss"
+
 
 export const Categories = () => {
     const categories = ['all', 'sports', 'tourer', 'sport-tour', 'cruiser', 'tour-enduro']
     const [activeCategory, setActiveCategory] = useState(0)
 
-    return <div style={{margin: '10px auto'}}>
-        <Stack style={{alignItems: "center"}} direction={"row"} spacing={1}>
+    return <Stack className={styles.categoriesGroup} direction={"row"} spacing={1}>
             {categories.map((c, index) => (<Chip key={index}
                                                  label={c}
                                                  variant={activeCategory === index ? "filled" : "outlined"}
@@ -15,5 +16,4 @@ export const Categories = () => {
                                                  onClick={() => {setActiveCategory(index)}}
             />))}
         </Stack>
-    </div>
 }

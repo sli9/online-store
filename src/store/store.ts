@@ -1,8 +1,8 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import thunkMiddleware from "redux-thunk"
-import {authReducer} from "../components/auth/auth-reducer";
+import {authReducer} from "../pages/auth/auth-reducer";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
-import {shopReducer} from "../components/main/shop-reducer";
+import {shopReducer} from "../pages/main/shop-reducer";
 
 const rootReducer = combineReducers({
     auth: authReducer,

@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import styles from "./App.module.scss";
 import {BrowserRouter} from "react-router-dom";
 import {Navbar} from "../components/Navbar";
 import {AppRouter} from "../features/AppRouter";
@@ -9,7 +9,7 @@ function App() {
     return (
         <BrowserRouter>
             <Navbar/>
-            <AppRouter/>
+            <div className={styles.container}><AppRouter/></div>
         </BrowserRouter>
     );
 }

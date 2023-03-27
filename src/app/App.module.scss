@@ -1,0 +1,9 @@
+.container {
+  max-width: 80%;
+  margin: auto;
+  background-color: #80808036;
+
+  @media screen and (max-width: 600px) {
+    max-width: 100%;
+  }
+}

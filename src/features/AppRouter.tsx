@@ -5,7 +5,7 @@ import {LOGIN_ROUTE, MAIN_ROUTE} from "../utils/constants";
 import {useAppDispatch, useAppSelector} from "../store/store";
 import {auth} from "../apiFirebase/FirebaseConfig";
 import {onAuthStateChanged} from "firebase/auth";
-import {setIsAuth} from "../components/auth/auth-reducer";
+import {setIsAuth} from "../pages/auth/auth-reducer";
 
 export const AppRouter = () => {
     const isAuth = useAppSelector(state => state.auth.isAuth)

@@ -1,8 +1,8 @@
 import {CART_ROUTE, LOGIN_ROUTE, MAIN_ROUTE} from "../utils/constants";
-import {Login} from "../components/auth/Login";
-import {Cart} from "../components/Cart";
+import {Login} from "../pages/auth/Login";
+import {Cart} from "../pages/Cart";
 import {FC} from "react";
-import {Main} from "../components/main/Main";
+import {Main} from "../pages/main/Main";
 
 type RouteType = {
     path: string

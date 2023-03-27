@@ -10,7 +10,7 @@ import {auth} from "../apiFirebase/FirebaseConfig";
 import Stack from '@mui/material/Stack';
 import Divider from "@mui/material/Divider";
 import {useAppDispatch, useAppSelector} from "../store/store";
-import {logout} from "./auth/auth-reducer";
+import {logout} from "../pages/auth/auth-reducer";
 import Avatar from "@mui/material/Avatar";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Badge from '@mui/material/Badge';
@@ -26,8 +26,8 @@ export const Navbar = () => {
 
     return (
         <Box sx={{flexGrow: 1}}>
-            <AppBar position="static">
-                <Toolbar variant={"dense"}>
+            <AppBar position="sticky">
+                <Toolbar variant={"dense"} style={{paddingRight: 0}}>
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                         <Button onClick={() => navigate('/')} color="inherit">Motorcycles</Button>
                     </Typography>
@@ -40,7 +40,7 @@ export const Navbar = () => {
                                 </Badge>
                             </NavLink>
                             <Avatar  src={photoURL as string} style={{margin: 'auto 5px'}}/>
-                            <p style={{margin: 'auto'}}>{auth.currentUser?.displayName}</p>
+                            <p style={{margin: 'auto', padding: '0 5px'}}>{auth.currentUser?.displayName}</p>
                             <Button onClick={() => {
                                 dispatch(logout())
                             }}
