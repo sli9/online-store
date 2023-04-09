@@ -12,6 +12,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 import Button from "@mui/material/Button";
+import {NavLink} from "react-router-dom";
 
 export const Cart = () => {
     return <Container>
@@ -99,14 +100,17 @@ export const Cart = () => {
                 justifyContent: 'space-between',
                 margin: '10px 0'
             }}>
-                <Button variant={'outlined'} sx={{
-                    borderRadius: '15%/50%'
-                }}>Go back</Button>
+                <NavLink to={'/'}>
+                    <Button variant={'outlined'} sx={{
+                        borderRadius: '15%/50%'
+                    }}>Go back</Button>
+                </NavLink>
                 <Button variant={'contained'} sx={{
                     backgroundColor: 'orangered',
                     borderRadius: '15%/50%'
-                }}>Pay
-                    now</Button>
+                }}>
+                    Pay now
+                </Button>
             </div>
 
         </Stack>

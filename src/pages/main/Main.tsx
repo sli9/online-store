@@ -1,5 +1,5 @@
-import React, {useEffect} from "react";
-import {getMoto} from "./shop-reducer";
+import React, {useCallback, useEffect, useState} from "react";
+import {getMoto, sortByAlphabet, sortByPrice} from "./shop-reducer";
 import {useAppDispatch, useAppSelector} from "../../store/store";
 import {bindActionCreators} from "@reduxjs/toolkit";
 import {Card, CardActions, CardContent, CardMedia} from "@mui/material";
@@ -13,27 +13,43 @@ import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "../../apiFirebase/FirebaseConfig";
 import Container from "@mui/material/Container";
 import styles from "./Main.module.scss"
+import {SelectChangeEvent} from "@mui/material/Select";
 
 export const Main = () => {
     const motoList = useAppSelector(state => state.shop)
     const dispatch = useAppDispatch()
     const [user, loading, error] = useAuthState(auth)
+    const [sortOption, setSortOption] = useState('')
 
     const getItems = bindActionCreators(getMoto, dispatch)
+    const sortMotoByPrice = bindActionCreators(sortByPrice, dispatch)
+    const sortMotoByAlphabet = bindActionCreators(sortByAlphabet, dispatch)
 
     useEffect(() => {
         getItems()
     }, [])
 
+    const onChangeSort = useCallback((e: SelectChangeEvent) => {
+        setSortOption(e.target.value)
+
+        if (e.target.value === '0') {
+            sortMotoByPrice()
+        }
+        if (e.target.value === '1') {
+            sortMotoByAlphabet()
+        }
+    }, [sortOption])
+
     return <>
         <Box className={styles.sortMenu}>
             <Categories/>
-            <Sort/>
+            <Sort sortValue={sortOption} onChangeHandler={onChangeSort}/>
         </Box>
         <Container className={styles.itemsContainer} style={{display: 'flex'}}>
             {loading
                 ? [...new Array(6)].map((_, i) => (
-                    <Box sx={{pt: 0.5}}><Skeleton variant="rectangular" width={345} height={170} key={i}/>
+                    <Box key={i} sx={{pt: 0.5}}>
+                        <Skeleton variant="rectangular" width={345} height={170} key={i}/>
                         <Skeleton height={70}/>
                         <Skeleton height={40} width="30%"/></Box>
                 ))

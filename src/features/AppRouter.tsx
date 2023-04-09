@@ -9,7 +9,6 @@ import {setIsAuth} from "../pages/auth/auth-reducer";
 
 export const AppRouter = () => {
     const isAuth = useAppSelector(state => state.auth.isAuth)
-    console.log(isAuth + '   ' + auth.currentUser?.uid)
     const dispatch = useAppDispatch()
 
     useEffect(() => {

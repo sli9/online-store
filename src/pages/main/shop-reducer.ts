@@ -28,7 +28,18 @@ export type ItemMotoType = {
 const slice = createSlice({
     name: 'shop',
     initialState: [] as Array<ItemMotoType>,
-    reducers: {},
+    reducers: {
+        sortByPrice(state) {
+            state.sort((a, b) => {
+                return a.price - b.price
+            })
+        },
+        sortByAlphabet(state) {
+            state.sort((a, b) => {
+                return a.title.localeCompare(b.title)
+            })
+        }
+    },
     extraReducers: builder => {
         builder.addCase(getMoto.fulfilled, (state, action) => {
             return action.payload?.map((m) => ({...m}))
@@ -37,3 +48,4 @@ const slice = createSlice({
 })
 
 export const shopReducer = slice.reducer
+export const {sortByPrice, sortByAlphabet} = slice.actions

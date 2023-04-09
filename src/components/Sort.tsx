@@ -1,23 +1,30 @@
-import React from 'react'
+import React, {FC} from 'react'
 import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select, {SelectChangeEvent} from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
-import { useState } from 'react';
+import InputLabel from "@mui/material/InputLabel";
 
-export const Sort = () => {
-    const [sortOption, setSortOption] = useState('0')
+type SortPropsType = {
+    sortValue: string
+    onChangeHandler: (e: SelectChangeEvent) => void
+}
+
+export const Sort: FC<SortPropsType> = ({sortValue, onChangeHandler}) => {
 
     return (
-        <FormControl variant="standard" sx={{m: 1, minWidth: 120}} style={{flexDirection: 'row'}}>
-            <span style={{margin: 'auto 10px'}}>Sort by:</span>
+        <FormControl variant="standard" sx={{m: 1, minWidth: 120}}>
+            <InputLabel id="select-sort-label">Sort by</InputLabel>
             <Select
                 labelId="select-sort-label"
-                id="select-sort"
-                value={sortOption}
-                onChange={(e: SelectChangeEvent) => {setSortOption(e.target.value)}}
+                id="select-standard"
+                label="Sort by"
+                value={sortValue}
+                onChange={(e: SelectChangeEvent) => {
+                    onChangeHandler(e)
+                }}
             >
-                <MenuItem value={0}>Price</MenuItem>
-                <MenuItem value={1}>Alphabet</MenuItem>
+                <MenuItem value={'0'}>Price</MenuItem>
+                <MenuItem value={'1'}>Alphabet</MenuItem>
             </Select>
         </FormControl>
     )
