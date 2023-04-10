@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {shopAPI} from "../../apiFirebase/FirebaseConfig";
 
 export const getMoto = createAsyncThunk<ItemMotoType[], undefined, { rejectValue: string }>
@@ -22,6 +22,7 @@ export type ItemMotoType = {
     id: string,
     title: string,
     img: string,
+    type: string,
     price: number
 }
 
@@ -38,6 +39,10 @@ const slice = createSlice({
             state.sort((a, b) => {
                 return a.title.localeCompare(b.title)
             })
+        },
+        filterByCategory(state, action: PayloadAction<{ value: string }>) {
+            debugger
+            state.filter(s => s.type === action.payload.value)
         }
     },
     extraReducers: builder => {
@@ -48,4 +53,4 @@ const slice = createSlice({
 })
 
 export const shopReducer = slice.reducer
-export const {sortByPrice, sortByAlphabet} = slice.actions
+export const {sortByPrice, sortByAlphabet, filterByCategory} = slice.actions

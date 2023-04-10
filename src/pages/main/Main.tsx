@@ -15,12 +15,13 @@ import Container from "@mui/material/Container";
 import styles from "./Main.module.scss"
 import {SelectChangeEvent} from "@mui/material/Select";
 
-export const Main = () => {
+export const Main = React.memo(function () {
     const motoList = useAppSelector(state => state.shop)
-    const dispatch = useAppDispatch()
     const [user, loading, error] = useAuthState(auth)
     const [sortOption, setSortOption] = useState('')
+    const [indexCategory, setIndexCategory] = useState(0)
 
+    const dispatch = useAppDispatch()
     const getItems = bindActionCreators(getMoto, dispatch)
     const sortMotoByPrice = bindActionCreators(sortByPrice, dispatch)
     const sortMotoByAlphabet = bindActionCreators(sortByAlphabet, dispatch)
@@ -28,6 +29,8 @@ export const Main = () => {
     useEffect(() => {
         getItems()
     }, [])
+
+    let motoForMap = motoList
 
     const onChangeSort = useCallback((e: SelectChangeEvent) => {
         setSortOption(e.target.value)
@@ -40,9 +43,35 @@ export const Main = () => {
         }
     }, [sortOption])
 
+
+    const onChangeCategory = useCallback((index: number) => {debugger
+        setIndexCategory(index)
+    }, [indexCategory])
+
+
+
+    if (indexCategory === 1) {
+        motoForMap = motoList.filter(m => m.type === 'sport')
+    }
+    if (indexCategory === 2) {
+        motoForMap = motoList.filter(m => m.type === 'tourer')
+    }
+    if (indexCategory === 3) {
+        motoForMap = motoList.filter(m => m.type === 'sport-tour')
+    }
+    if (indexCategory === 4) {
+        motoForMap = motoList.filter(m => m.type === 'cruiser')
+    }
+    if (indexCategory === 5) {
+        motoForMap = motoList.filter(m => m.type === 'tour-enduro')
+    }
+    if (indexCategory === 6) {
+        motoForMap = motoList.filter(m => m.type === 'street')
+    }
+
     return <>
         <Box className={styles.sortMenu}>
-            <Categories/>
+            <Categories activeIndex={indexCategory} onClickHandler={onChangeCategory}/>
             <Sort sortValue={sortOption} onChangeHandler={onChangeSort}/>
         </Box>
         <Container className={styles.itemsContainer} style={{display: 'flex'}}>
@@ -53,7 +82,7 @@ export const Main = () => {
                         <Skeleton height={70}/>
                         <Skeleton height={40} width="30%"/></Box>
                 ))
-                : motoList.map(m => (
+                : motoForMap.map(m => (
                     <Card sx={{width: 345}} style={{margin: 10}} key={m.id}>
                         <CardMedia
                             sx={{height: 170}}
@@ -63,8 +92,11 @@ export const Main = () => {
                             <Typography gutterBottom variant="h5" component="div">
                                 {m.title}
                             </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                {m.price}
+                            <Typography gutterBottom variant="subtitle1" component="div">
+                                {m.type}
+                            </Typography>
+                            <Typography variant="body1" color="text.secondary">
+                                {m.price}$
                             </Typography>
                         </CardContent>
                         <CardActions>
@@ -74,4 +106,4 @@ export const Main = () => {
                 ))}
         </Container>
     </>
-}
+})

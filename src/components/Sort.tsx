@@ -21,6 +21,7 @@ export const Sort: FC<SortPropsType> = ({sortValue, onChangeHandler}) => {
                 value={sortValue}
                 onChange={(e: SelectChangeEvent) => {
                     onChangeHandler(e)
+                    console.log(typeof e === 'object')
                 }}
             >
                 <MenuItem value={'0'}>Price</MenuItem>
