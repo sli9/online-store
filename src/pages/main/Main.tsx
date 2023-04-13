@@ -15,6 +15,7 @@ import Container from "@mui/material/Container";
 import styles from "./Main.module.scss"
 import {SelectChangeEvent} from "@mui/material/Select";
 
+
 export const Main = React.memo(function () {
     const motoList = useAppSelector(state => state.shop)
     const [user, loading, error] = useAuthState(auth)
@@ -44,10 +45,10 @@ export const Main = React.memo(function () {
     }, [sortOption])
 
 
-    const onChangeCategory = useCallback((index: number) => {debugger
+    const onChangeCategory = useCallback((index: number) => {
+        debugger
         setIndexCategory(index)
     }, [indexCategory])
-
 
 
     if (indexCategory === 1) {
