@@ -4,7 +4,11 @@ import {BrowserRouter} from "react-router-dom";
 import {Navbar} from "../components/Navbar";
 import {AppRouter} from "../features/AppRouter";
 
-const SearchContext = createContext({})
+export type SearchContextType = {
+    searchValue: string
+    setSearchValue: (text: string) => void
+}
+export const SearchContext = createContext<SearchContextType | null>(null)
 
 function App() {
     const [searchValue, setSearchValue] = useState('')

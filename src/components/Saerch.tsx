@@ -1,6 +1,7 @@
-import React from "react"
+import React, {useContext} from "react"
 import {styled} from "@mui/material/styles";
 import TextField from '@mui/material/TextField'
+import {SearchContext, SearchContextType} from "../app/App";
 
 const SearchInput = styled(TextField)({
     '& label, & label.Mui-focused': {
@@ -27,6 +28,11 @@ const SearchInput = styled(TextField)({
 
 
 export const Search = () => {
+    const {searchValue, setSearchValue} = useContext(SearchContext) as SearchContextType
+
     return <SearchInput label="Search moto..." id="custom-css-outlined-input"
-                        size={'small'}/>
+                        size={'small'}
+                        value={searchValue}
+                        onChange={(e) => setSearchValue(e.target.value)}
+    />
 }
