@@ -9,7 +9,7 @@ type SortPropsType = {
     onChangeHandler: (e: SelectChangeEvent) => void
 }
 
-export const Sort: FC<SortPropsType> = ({sortValue, onChangeHandler}) => {
+export const Sort: FC<SortPropsType> = React.memo(function ({sortValue, onChangeHandler}) {
 
     return (
         <FormControl variant="standard" sx={{m: 1, minWidth: 120}}>
@@ -21,12 +21,13 @@ export const Sort: FC<SortPropsType> = ({sortValue, onChangeHandler}) => {
                 value={sortValue}
                 onChange={(e: SelectChangeEvent) => {
                     onChangeHandler(e)
-                    console.log(typeof e === 'object')
                 }}
             >
-                <MenuItem value={'0'}>Price</MenuItem>
-                <MenuItem value={'1'}>Alphabet</MenuItem>
+                <MenuItem value={'0'}>Price <span>&#8681;</span></MenuItem>
+                <MenuItem value={'1'}>Price <span> &#8679;</span></MenuItem>
+                <MenuItem value={'2'}>Alphabet (A-Z)</MenuItem>
+                <MenuItem value={'3'}>Alphabet (Z-A)</MenuItem>
             </Select>
         </FormControl>
     )
-}
+})

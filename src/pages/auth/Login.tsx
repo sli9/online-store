@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import {useAppDispatch} from "../../store/store";
-import {login} from "./auth-reducer";
+import {login} from "../../store/slices/auth-slise";
 
 export const Login = () => {
     const dispatch = useAppDispatch()

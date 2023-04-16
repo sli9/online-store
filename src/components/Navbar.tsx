@@ -9,13 +9,13 @@ import {auth} from "../apiFirebase/FirebaseConfig";
 import Stack from '@mui/material/Stack';
 import Divider from "@mui/material/Divider";
 import {useAppDispatch, useAppSelector} from "../store/store";
-import {logout} from "../pages/auth/auth-reducer";
 import Avatar from "@mui/material/Avatar";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Badge from '@mui/material/Badge';
 import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import {Search} from "./Saerch";
+import {logout} from "../store/slices/auth-slise";
 
 export const Navbar = () => {
     const isAuth = useAppSelector(state => state.auth.isAuth)
@@ -54,7 +54,8 @@ export const Navbar = () => {
                         </Stack>
                         :
                         <NavLink to={LOGIN_ROUTE}>
-                            <Button variant={'outlined'} color="primary" sx={{marginRight: '10px'}}><LoginIcon/></Button>
+                            <Button variant={'outlined'} color="primary"
+                                    sx={{marginRight: '10px'}}><LoginIcon/></Button>
                         </NavLink>
                     }
                 </Toolbar>

@@ -1,5 +1,4 @@
-import React, {useCallback, useContext, useEffect, useState} from "react";
-import {getMoto, sortByAlphabet, sortByPrice} from "./shop-reducer";
+import React, {useCallback, useContext, useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../../store/store";
 import {bindActionCreators} from "@reduxjs/toolkit";
 import {Card, CardActions, CardContent, CardMedia} from "@mui/material";
@@ -15,63 +14,85 @@ import Container from "@mui/material/Container";
 import styles from "./Main.module.scss"
 import {SelectChangeEvent} from "@mui/material/Select";
 import {SearchContext, SearchContextType} from "../../app/App"
+import {getMoto} from "../../store/slices/shop-slice";
+import {filterByCategory, setSortIndex} from "../../store/slices/filters-slice";
 
 
 export const Main = React.memo(function () {
     const motoList = useAppSelector(state => state.shop)
+    const {categoryIndex, sortIndex} = useAppSelector(state => state.filter)
     const [user, loading, error] = useAuthState(auth)
-    const [sortOption, setSortOption] = useState('')
-    const [indexCategory, setIndexCategory] = useState(0)
-
     const {searchValue} = useContext(SearchContext) as SearchContextType
 
     const dispatch = useAppDispatch()
     const getItems = bindActionCreators(getMoto, dispatch)
-    const sortMotoByPrice = bindActionCreators(sortByPrice, dispatch)
-    const sortMotoByAlphabet = bindActionCreators(sortByAlphabet, dispatch)
 
     useEffect(() => {
         getItems()
     }, [])
 
-    let motoForMap = motoList
 
     const onChangeSort = useCallback((e: SelectChangeEvent) => {
-        setSortOption(e.target.value)
-
-        if (e.target.value === '0') {
-            sortMotoByPrice()
-        }
-        if (e.target.value === '1') {
-            sortMotoByAlphabet()
-        }
-    }, [sortOption])
-
+        dispatch(setSortIndex({value: e.target.value}))
+    }, [sortIndex])
 
     const onChangeCategory = useCallback((index: number) => {
-        setIndexCategory(index)
-    }, [indexCategory])
+        dispatch(filterByCategory({value: index}))
+    }, [categoryIndex])
 
-
-    {
-        if (indexCategory === 1) {
+    let motoForMap = motoList
+    //sort by category
+    switch (categoryIndex) {
+        case 0:
+            motoForMap = motoList
+            break
+        case 1:
             motoForMap = motoList.filter(m => m.type === 'sport')
-        }
-        if (indexCategory === 2) {
+            break
+        case 2:
             motoForMap = motoList.filter(m => m.type === 'tourer')
-        }
-        if (indexCategory === 3) {
+            break
+        case 3:
             motoForMap = motoList.filter(m => m.type === 'sport-tour')
-        }
-        if (indexCategory === 4) {
+            break
+        case 4:
             motoForMap = motoList.filter(m => m.type === 'cruiser')
-        }
-        if (indexCategory === 5) {
+            break
+        case 5:
             motoForMap = motoList.filter(m => m.type === 'tour-enduro')
-        }
-        if (indexCategory === 6) {
+            break
+        case 6:
             motoForMap = motoList.filter(m => m.type === 'street')
+            break
+    }
+    //sort by price or alphabet
+    switch (sortIndex) {
+        case '0': {
+            motoForMap = motoForMap.slice().sort((a, b) => {
+                return b.price - a.price
+            })
+            break
         }
+        case '1': {
+            motoForMap = motoForMap.slice().sort((a, b) => {
+                return a.price - b.price
+            })
+            break
+        }
+        case '2': {
+            motoForMap = motoForMap.slice().sort((a, b) => {
+                return a.title.localeCompare(b.title)
+            })
+            break
+        }
+        case '3': {
+            motoForMap = motoForMap.slice().sort((a, b) => {
+                return b.title.localeCompare(a.title)
+            })
+            break
+        }
+        default:
+            motoForMap = motoList
     }
 
     const skeletons = [...new Array(6)].map((_, i) => (
@@ -83,33 +104,33 @@ export const Main = React.memo(function () {
     ))
     const motoItems = motoForMap.filter(m =>
         m.title.toLowerCase().includes(searchValue.toLowerCase()))
-    .map(m => (
-        <Card sx={{width: 345}} style={{margin: 10}} key={m.id}>
-            <CardMedia
-                sx={{height: 170}}
-                image={m.img}
-            />
-            <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                    {m.title}
-                </Typography>
-                <Typography gutterBottom variant="subtitle1" component="div">
-                    {m.type}
-                </Typography>
-                <Typography variant="body1" color="text.secondary">
-                    {m.price}$
-                </Typography>
-            </CardContent>
-            <CardActions>
-                <Button size="small" variant={'contained'}>Add to cart</Button>
-            </CardActions>
-        </Card>
-    ))
+        .map(m => (
+            <Card sx={{width: 345}} style={{margin: 10}} key={m.id}>
+                <CardMedia
+                    sx={{height: 170}}
+                    image={m.img}
+                />
+                <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                        {m.title}
+                    </Typography>
+                    <Typography gutterBottom variant="subtitle1" component="div">
+                        {m.type}
+                    </Typography>
+                    <Typography variant="body1" color="text.secondary">
+                        {m.price}$
+                    </Typography>
+                </CardContent>
+                <CardActions>
+                    <Button size="small" variant={'contained'}>Add to cart</Button>
+                </CardActions>
+            </Card>
+        ))
 
     return <>
         <Box className={styles.sortMenu}>
-            <Categories activeIndex={indexCategory} onClickHandler={onChangeCategory}/>
-            <Sort sortValue={sortOption} onChangeHandler={onChangeSort}/>
+            <Categories activeIndex={categoryIndex} onClickHandler={onChangeCategory}/>
+            <Sort sortValue={sortIndex} onChangeHandler={onChangeSort}/>
         </Box>
         <Container className={styles.itemsContainer} style={{display: 'flex'}}>
             {loading ? skeletons : motoItems}
