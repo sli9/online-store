@@ -1,10 +1,11 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {shopAPI} from "../../apiFirebase/FirebaseConfig";
+import {CategoriesType} from "../../components/categories";
 
-export const getMoto = createAsyncThunk<ItemMotoType[], undefined, { rejectValue: string }>
+export const getMoto = createAsyncThunk<ItemMotoType[], CategoriesType, { rejectValue: string }>
 ('shop/getMoto', async (data, {rejectWithValue}) => {
     try {
-        const res = await shopAPI.getMoto()
+        const res = await shopAPI.getMoto(data)
         if (!res) {
             return rejectWithValue(`We don't have moto`)
         }

@@ -1,16 +1,17 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {CategoriesType} from "../../components/categories";
 
 type FilterType = {
-    categoryIndex: number
+    category: CategoriesType
     sortIndex: string
 }
 
 const slice = createSlice({
     name: 'filter',
-    initialState: {categoryIndex: 0, sortIndex: ''} as FilterType,
+    initialState: {category: 'all', sortIndex: ''} as FilterType,
     reducers: {
-        filterByCategory(state, action: PayloadAction<{ value: number }>) {
-            state.categoryIndex = action.payload.value
+        filterByCategory(state, action: PayloadAction<{ value: CategoriesType }>) {
+            state.category = action.payload.value
         },
         setSortIndex(state, action: PayloadAction<{ value: string }>) {
             state.sortIndex = action.payload.value

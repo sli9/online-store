@@ -1,6 +1,7 @@
 import {initializeApp} from "firebase/app";
 import {getAuth, GoogleAuthProvider, signInWithPopup} from "firebase/auth"
-import {collection, getDocs, getFirestore} from "firebase/firestore"
+import {collection, getDocs, getFirestore, query, where} from "firebase/firestore"
+import {CategoriesType} from "../components/categories";
 
 
 // Web app's Firebase configuration
@@ -23,9 +24,14 @@ export const db = getFirestore(app)
 // shopAPI
 const motoCollectionRef = collection(db, 'motorcycles')
 
+
 export const shopAPI = {
-    getMoto() {
-        return getDocs(motoCollectionRef)
+    getMoto(category: CategoriesType) {
+        let bikes
+        category !== 'all' ?
+            bikes = query(motoCollectionRef, where('type', '==', category)) :
+            bikes = query(motoCollectionRef)
+        return getDocs(bikes)
     }
 }
 
