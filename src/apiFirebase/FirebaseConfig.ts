@@ -1,6 +1,6 @@
 import {initializeApp} from "firebase/app";
 import {getAuth, GoogleAuthProvider, signInWithPopup} from "firebase/auth"
-import {collection, getDocs, getFirestore, query, where} from "firebase/firestore"
+import {collection, getDocs, getFirestore, orderBy, query, where} from "firebase/firestore"
 import {CategoriesType} from "../components/categories";
 
 
@@ -26,11 +26,29 @@ const motoCollectionRef = collection(db, 'motorcycles')
 
 
 export const shopAPI = {
-    getMoto(category: CategoriesType) {
-        let bikes
-        category !== 'all' ?
-            bikes = query(motoCollectionRef, where('type', '==', category)) :
-            bikes = query(motoCollectionRef)
+    getMoto(category: CategoriesType, sortIndex: string) {
+        let bikes = query(motoCollectionRef)
+
+        if (category !== 'all' && sortIndex !== '') {
+            sortIndex.includes('Desc') ?
+                bikes = query(motoCollectionRef,
+                    where('type', '==', category),
+                    orderBy(sortIndex.replace('Desc', ''), 'desc')) :
+                bikes = query(motoCollectionRef,
+                    where('type', '==', category),
+                    orderBy(sortIndex))
+        }
+        if (category !== 'all' && sortIndex === '') {
+            bikes = query(motoCollectionRef, where('type', '==', category))
+        }
+        if (category === 'all' && sortIndex !== '') {
+            sortIndex.includes('Desc') ?
+                bikes = query(motoCollectionRef,
+                    orderBy(sortIndex.replace('Desc', ''), 'desc')) :
+                bikes = query(motoCollectionRef,
+                    orderBy(sortIndex))
+        }
+
         return getDocs(bikes)
     }
 }
